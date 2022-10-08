@@ -1,0 +1,12 @@
+{
+  "name": "shoc-rndm-prcs-msg-gen",
+  "version": "1.0.0",
+  "description": "Simple nodejs script to generate a series of log messages for consumption using Loki/Grafana to test the time-line graph (CCS)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+	  "start": "node ."
+  },
+  "author": "C Stone",
+  "license": "ISC"
+}

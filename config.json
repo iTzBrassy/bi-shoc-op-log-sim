@@ -1,0 +1,11 @@
+{
+	"user": "User1",
+	"role": "Role1",
+	"process": ["Process01", "Process02", "Process03", "Process04", "Process05"],
+	
+	"interval": 60000,
+	"firstLoginInterval": 60000,
+  
+	"logoutOdds": 0.05,
+	"loginOdds": 0.01
+}
