@@ -1,3 +1,7 @@
+// Run build docker image
+$ docker build --tag node-docker .
+docker run node-docker
+
 {
 	"user": "User1",
 	"role": "Role1",
