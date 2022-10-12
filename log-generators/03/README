@@ -1,0 +1,23 @@
+// Run build docker image
+$ docker build --tag node-docker .
+docker run node-docker
+
+{
+	"user": "User1",
+	"role": "Role1",
+	"process": ["Process01", "Process02", "Process03", "Process04", "Process05"],
+	
+  // Sub-Process definitions are options
+  "Process01": {
+    "subTask": ["Review", "Design", "Update", "Message", "PostReview"], 
+    "stopOdds": .25 // If adding sub-tasks, NOT OPTIONAL
+  },
+  
+  "minInterval": 60000, // Optional
+	"interval": 300000,
+	"minFirstLoginInterval": 60000,
+	"firstLoginInterval": 30000, // Optional
+  
+	"logoutOdds": 0.05, // Optional
+	"loginOdds": 0.01 // Optional
+}

@@ -1,0 +1,18 @@
+{
+	"user": "User4",
+	"role": "Role3",
+	"process": ["Process11", "Process12", "Process13", "Process14", "Process15"],
+	
+  "Process01": {
+    "subTask": ["Review", "Design", "Update", "Message", "PostReview"], 
+    "stopOdds": 0.25
+  },
+  
+  "minInterval": 60000, 
+	"interval": 300000,
+	"minFirstLoginInterval": 60000,
+	"firstLoginInterval": 30000, 
+  
+	"logoutOdds": 0.05,
+	"loginOdds": 0.01
+}
