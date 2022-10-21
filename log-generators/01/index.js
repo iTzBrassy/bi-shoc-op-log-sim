@@ -19,10 +19,14 @@ function sleep(ms) {
 
 // Log our messages
 function logMessage(process, msg) {
-  if (msg !== undefined)
-    logger.info('[' + obj.user + '][' + obj.role + '][' + process + '] ' + msg);
-  else
-    logger.info('[' + obj.user + '][' + obj.role + '][' + process + ']');
+  let json = {
+    user: obj.user,
+    role: obj.role,
+    process: process,
+    message: msg 
+  };
+  
+  logger.info(JSON.stringify(json));
 }
 
 async function start() {
