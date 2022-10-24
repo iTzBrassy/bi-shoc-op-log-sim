@@ -19,22 +19,22 @@ END
 $do$;
 
 
--- Create the parametric database if it doesn't exist
+-- Create the test_db database if it doesn't exist
 DO
 $do$
 BEGIN
-   IF EXISTS (SELECT FROM pg_database WHERE datname = 'parametric') THEN
+   IF EXISTS (SELECT FROM pg_database WHERE datname = 'test_db') THEN
       RAISE NOTICE 'Database already exists';  -- optional
    ELSE
       PERFORM dblink_exec('dbname=' || current_database()  -- current db
-                        , 'CREATE DATABASE parametric OWNER=''shoc''');
+                        , 'CREATE DATABASE test_db OWNER=''shoc''');
    END IF;
 END
 $do$;
 
--- Switch to the parametric database
-SET search_path TO parametric;
-\connect parametric
+-- Switch to the test_db database
+SET search_path TO test_db;
+\connect test_db
 
 -- Creat the SISO schema to save the SISO/ISO data into
 --CREATE SCHEMA IF NOT EXISTS siso AUTHORIZATION shoc;
