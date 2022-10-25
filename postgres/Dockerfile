@@ -1,11 +1,22 @@
 FROM postgres:12.10
 
+# Add the plpython function to the database
+RUN apt-get update && apt-get install --assume-yes postgresql-plpython3-13
+
 # Delete our left over sample_data.sql
 RUN mkdir preloaded_data
+RUN mkdir preloaded_data/advData
 
 # COPY ALL OF OUR DATA_SHEETS OVER (We copy all of them over since there's no conditional COPY)
 COPY ./pg_sample_data/random/*.sql \
 		/preloaded_data/
+
+COPY ./pg_sample_data/random/AdventureWorks/*.sql \
+		/preloaded_data/
+
+COPY ./pg_sample_data/random/AdventureWorks/*.csv \
+		/preloaded_data/advData/
+
 
 # Retrieve all of the files from the folder
 RUN file="$(ls -1 /preloaded_data)" && echo $file

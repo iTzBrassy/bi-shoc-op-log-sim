@@ -2,6 +2,7 @@
 --              supports connections to other PostgreSQL databases
 --              from within a database session.)
 CREATE EXTENSION IF NOT EXISTS dblink;
+CREATE EXTENSION IF NOT EXISTS plpython3u;
 
 -- Create the postgres superuser role incase it doesn't already
 --              exist (we don't create it my default, since the default
