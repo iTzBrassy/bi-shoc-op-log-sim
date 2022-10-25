@@ -1,7 +1,7 @@
 FROM postgres:12.10
 
 # Add the plpython function to the database
-RUN apt-get update && apt-get install --assume-yes postgresql-plpython3-13
+RUN apt-get update && apt-get install --assume-yes postgresql-plpython3-12
 
 # Delete our left over sample_data.sql
 RUN mkdir preloaded_data
