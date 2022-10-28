@@ -1,10 +1,29 @@
+CREATE DATABASE pgagent;
+\c pgagent
+
+CREATE EXTENSION pgagent;
+
+CREATE TABLE test(tx timestamptz default now(), note text);
+
+CREATE USER "pgagent" WITH
+  LOGIN
+  NOSUPERUSER
+  INHERIT
+  NOCREATEDB
+  NOCREATEROLE
+  NOREPLICATION
+  encrypted password 'secret';
+
+GRANT USAGE ON SCHEMA pgagent TO pgagent;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA pgagent TO pgagent;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA pgagent TO pgagent;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO pgagent;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO pgagent;
+
 -- Install the dblink exstension (dblink is a module that 
 --		supports connections to other PostgreSQL databases 
 --		from within a database session.)
 CREATE EXTENSION IF NOT EXISTS dblink;
-CREATE EXTENSION IF NOT EXISTS plpython3u;
-CREATE EXTENSION IF NOT EXISTS pgagent;
-CREATE EXTENSION IF NOT EXISTS plpgsql;
 
 -- Create the postgres superuser role incase it doesn't already
 --		exist (we don't create it my default, since the default
@@ -39,6 +58,8 @@ $do$;
 SET search_path TO test_db;
 \connect test_db
 
+-- Add the python extension to the database
+CREATE EXTENSION IF NOT EXISTS plpython3u;
 
 
 CREATE TABLE IF NOT EXISTS public.loki_injest

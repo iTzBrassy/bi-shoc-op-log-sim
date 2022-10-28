@@ -53,6 +53,11 @@ services:
       POSTGRES_USER: shoc
       POSTGRES_PASSWORD: JustKeepSwimming
       POSTGRES_DB: test_db
+      PGAGENT_ENABLED: 'true' # Must be string
+      PGAGENT_USER: pgagent
+      PGAGENT_PASSWORD: secret
+      PGAGENT_DB: pgagent
+      PGAGENT_LOG_LEVEL: 2
     ports:
       - "5432:5432"
     logging:
