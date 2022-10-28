@@ -38,17 +38,16 @@ SET search_path TO test_db;
 \connect test_db
 
 
-setvar SqlSamplesSourceDataPath "./advData";
-setvar DatabaseName "test_db";
+--DECLARE SqlSamplesSourceDataPath text := './advData';
+--DECLARE DatabaseName text := 'test_db';
 
 SET NOCOUNT OFF;
-PRINT CONVERT(varchar(1000), @@VERSION);
 PRINT '';
-PRINT 'Started - ' + CONVERT(varchar, GETDATE(), 121);
+--PRINT 'Started - ' + CONVERT(varchar, GETDATE(), 121);
 
 SET NOEXEC ON;
 
-ALTER DATABASE $(DatabaseName) 
+ALTER DATABASE test_db 
 SET RECOVERY SIMPLE, 
     ANSI_NULLS ON, 
     ANSI_PADDING ON, 
@@ -65,23 +64,21 @@ SET RECOVERY SIMPLE,
 -- ****************************************
 PRINT '';
 PRINT '*** Creating DDL Trigger for Database';
-GO
 
 SET QUOTED_IDENTIFIER ON;
-GO
 
 -- Create table to store database object creation messages
 -- *** WARNING:  THIS TABLE IS INTENTIONALLY A HEAP - DO NOT ADD A PRIMARY KEY ***
-CREATE TABLE [dbo].[DatabaseLog](
-    [DatabaseLogID] [int] IDENTITY (1, 1) NOT NULL,
-    [PostTime] [datetime] NOT NULL, 
-    [DatabaseUser] [sysname] NOT NULL, 
-    [Event] [sysname] NOT NULL, 
-    [Schema] [sysname] NULL, 
-    [Object] [sysname] NULL, 
-    [TSQL] [nvarchar](max) NOT NULL, 
-    [XmlEvent] [xml] NOT NULL
-) ON [PRIMARY];
+CREATE TABLE DatabaseLog(
+    DatabaseLogID int IDENTITY (1, 1) NOT NULL,
+    PostTime datetime NOT NULL, 
+    DatabaseUser sysname NOT NULL, 
+    Event sysname NOT NULL, 
+    Schema sysname NULL, 
+    Object sysname NULL, 
+    TSQL nvarchar(max) NOT NULL, 
+    XmlEvent xml NOT NULL
+);
 
 
 
