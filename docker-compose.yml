@@ -42,6 +42,16 @@ services:
         loki-url: "http://loki:3100/loki/api/v1/push"
 ## ------------------------------------------- END DASHBOARD SECTION ------------------------------------------
 
+## --------------------------------------------- JUPYTER SECTION --------------------------------------------
+  # Custom datascience-notebook, for us to use
+  datascience-notebook:
+      image: jupyter/datascience-notebook
+      volumes:
+        - ./jupyter:/home/jovyan/work
+      ports:
+        - 8888:8888
+      container_name:   bi-jupyter-container
+## ------------------------------------------- END JUPYTER SECTION ------------------------------------------
 
 ## --------------------------------------------- POSTGRES SECTION ---------------------------------------------
   # Database Container (postgres)
