@@ -141,19 +141,74 @@ AS $BODY$
     END;
 $BODY$;
 
+
 CREATE OR REPLACE VIEW public.loki_value_parsed
  AS
  SELECT substr(loki_value."values", "position"(loki_value."values", '['::text), "position"(loki_value."values", ']'::text))::timestamp without time zone AS time_log,
     loki_value.image_name,
-    loki_value."jsonValues" -> 'role'::text AS role,
-    loki_value."jsonValues" -> 'user'::text AS "user",
-    loki_value."jsonValues" -> 'message'::text AS message,
-    loki_value."jsonValues" -> 'process'::text AS process
+    replace((loki_value."jsonValues" -> 'role')::text, '"', '') AS role,
+    replace((loki_value."jsonValues" -> 'user')::text, '"', '') AS "user",
+    replace((loki_value."jsonValues" -> 'message')::text, '"', '') AS message,
+    replace((loki_value."jsonValues" -> 'process')::text, '"', '') AS process
    FROM loki_value;
 
 ALTER TABLE public.loki_value_parsed
     OWNER TO shoc;
 
+
+CREATE OR REPLACE VIEW public.loki_aggregated_tmp
+ AS
+ SELECT start_msg.image_name,
+    start_msg.role,
+    start_msg."user",
+    start_msg.process,
+    start_msg.message AS start_message,
+    stop_msg.message AS stop_message,
+    start_msg.time_log AS start_time_log,
+    stop_msg.time_log AS stop_time_log,
+    row_number() OVER (PARTITION BY start_msg.image_name, start_msg.role, start_msg."user", start_msg.process, start_msg.time_log ORDER BY stop_msg.time_log) AS row_num
+   FROM ( SELECT loki_value_parsed.time_log,
+            loki_value_parsed.image_name,
+            loki_value_parsed.role,
+            loki_value_parsed."user",
+            loki_value_parsed.message,
+            loki_value_parsed.process
+           FROM loki_value_parsed
+          WHERE loki_value_parsed.message = 'Start'::text) start_msg
+     LEFT JOIN ( SELECT loki_value_parsed.time_log,
+            loki_value_parsed.image_name,
+            loki_value_parsed.role,
+            loki_value_parsed."user",
+            loki_value_parsed.message,
+            loki_value_parsed.process
+           FROM loki_value_parsed
+          WHERE loki_value_parsed.message = 'Stop'::text) stop_msg ON 
+		  		start_msg.image_name = stop_msg.image_name AND 
+		  		start_msg.role = stop_msg.role AND 
+				start_msg."user" = stop_msg."user" AND 
+				start_msg.process = stop_msg.process AND
+				start_msg.time_log < stop_msg.time_log;
+
+ALTER TABLE public.loki_aggregated_tmp
+    OWNER TO shoc;
+
+CREATE OR REPLACE VIEW public.loki_aggregated
+ AS
+ SELECT loki_aggregated_tmp.image_name,
+    loki_aggregated_tmp.role,
+    USER AS "user",
+    loki_aggregated_tmp.process,
+    loki_aggregated_tmp.start_message,
+    loki_aggregated_tmp.stop_message,
+    loki_aggregated_tmp.start_time_log AS start_time,
+    loki_aggregated_tmp.stop_time_log AS stop_time
+   FROM loki_aggregated_tmp
+  WHERE loki_aggregated_tmp.row_num = 1
+  ORDER BY loki_aggregated_tmp.image_name, loki_aggregated_tmp.role, (USER), loki_aggregated_tmp.process, loki_aggregated_tmp.start_time_log;
+
+ALTER TABLE public.loki_aggregated
+    OWNER TO shoc;
+               
 
 INSERT INTO public.loki_injest(
 	imported)
