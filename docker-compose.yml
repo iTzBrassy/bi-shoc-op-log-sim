@@ -45,12 +45,16 @@ services:
 ## --------------------------------------------- JUPYTER SECTION --------------------------------------------
   # Custom datascience-notebook, for us to use
   datascience-notebook:
-      image: jupyter/datascience-notebook
+      #image:            jupyter/datascience-notebook
+      # So that we can add the libraryies that I want/need use a custom 
+      build: ./jupyter/.
       volumes:
         - ./jupyter:/home/jovyan/work
       ports:
-        - 8888:8888
-      container_name:   bi-jupyter-container
+        - 8889:8888
+      container_name: bi-jupyter-container
+      networks:
+        - business-intelligence-net
 ## ------------------------------------------- END JUPYTER SECTION ------------------------------------------
 
 ## --------------------------------------------- POSTGRES SECTION ---------------------------------------------

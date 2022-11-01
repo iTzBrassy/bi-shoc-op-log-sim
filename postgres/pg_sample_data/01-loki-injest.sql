@@ -141,6 +141,8 @@ AS $BODY$
     END;
 $BODY$;
 
+CREATE TRIGGER loki_inject_new BEFORE INSERT ON loki_injest
+    FOR EACH ROW EXECUTE FUNCTION loki_inject_new();
 
 CREATE OR REPLACE VIEW public.loki_value_parsed
  AS
