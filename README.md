@@ -11,6 +11,4 @@ http://localhost:9090/
 #   Add server, in connection tab set (host=pg_container, username=shoc, password=JustKeepSwimming)
 http://localhost:3031/
 # jupyterLab
-#   To open jupyter lab for the first time you need to pass a token, you can get it by running the command
-#   $ docker logs bi-jupyter-container
 http://localhost:8889/
