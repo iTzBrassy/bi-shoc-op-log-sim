@@ -6,7 +6,7 @@ RUN whoami
 USER root
 
 # Add the libpq-dev library
-RUN apt-get update && apt-get install --assume-yes libpq-dev
+RUN apt-get update && apt-get install --assume-yes libpq-dev plotly
 
 # Switch back to jovyan
 USER jovyan
